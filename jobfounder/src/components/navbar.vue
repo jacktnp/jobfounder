@@ -7,8 +7,11 @@
 
       <b-collapse id="nav-collapse" class="justify-content-end" is-nav>
         <b-navbar-nav>
-          <b-nav-item href="/" active>งานทั้งหมด</b-nav-item>
-          <b-nav-item href="/request/">รับสมัครงาน</b-nav-item>
+          <!-- <router-link to="../" :class="[currentPage.includes('home') ? activeClass : '', 'nav-link']">งานทั้งหมด</router-link>
+          <router-link to="../request" :class="[currentPage.includes('request') ? activeClass : '', 'nav-link']">รับสมัครงาน</router-link> -->
+          <b-nav-item href="../" active>งานทั้งหมด</b-nav-item>
+          <b-nav-item href="../request">รับสมัครงาน</b-nav-item>
+          <b-nav-item href="../adminpanel">ผู้ดูแลระบบ</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
