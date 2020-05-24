@@ -9,7 +9,11 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { VueEditor } from "vue2-editor"
 import { firestorePlugin } from 'vuefire'
 import Firebase from 'firebase'
-
+import VueToast from 'vue-toast-notification';
+// Import one of available themes
+import 'vue-toast-notification/dist/theme-default.css';
+//import 'vue-toast-notification/dist/theme-sugar.css';
+Vue.use(VueToast);
 Vue.use(firestorePlugin)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)

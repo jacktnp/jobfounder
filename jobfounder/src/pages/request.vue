@@ -201,6 +201,13 @@ export default {
         this.newJob.companymail = '';
         this.newJob.companysite = '';
         this.newJob.check = 'pending';
+        this.$toast.open({
+          message: "ส่งข้อมูลสำเร็จ รออนุมัติจากผู้ดูแลระบบ",
+          position: "top-right",
+          type: "success",
+          duration: 5000,
+          dismissible: true
+        })
     }
   },
   mounted () {
