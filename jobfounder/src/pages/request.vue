@@ -2,7 +2,7 @@
   <b-container>
     <b-form @submit.prevent="addJobs">
       <b-row>
-        <b-col cols="8">
+        <b-col md="8">
           <h4 class="text-center"><span style="font-weight: 800;font-size: 1.5em;">J</span>obs Detail</h4>
           <b-form-group label="ตำแหน่งที่รับสมัคร" label-for="position">
             <b-form-input
@@ -25,7 +25,7 @@
           <br />
 
           <b-row>
-            <b-col cols="3">
+            <b-col md="3">
               <b-form-group label="ประเภทงาน">
                 <b-form-checkbox-group
                   id="typejob"
@@ -35,7 +35,7 @@
                 ></b-form-checkbox-group>
               </b-form-group>
             </b-col>
-            <b-col cols="3">
+            <b-col md="3">
               <b-form-group label="เงินเดือนขั้นต่ำ" label-for="minsalary">
                 <b-form-input
                   id="minsalary"
@@ -46,7 +46,7 @@
                 ></b-form-input>
               </b-form-group>
             </b-col>
-            <b-col cols="3">
+            <b-col md="3">
               <b-form-group label="เงินเดือนสูงสุด" label-for="maxsalary">
                 <b-form-input
                   id="maxsalary"
@@ -57,7 +57,7 @@
                 ></b-form-input>
               </b-form-group>
             </b-col>
-            <b-col cols="3">
+            <b-col md="3">
               <b-form-group
                 label="สัญญาจ้างขั้นต่ำ (เดือน)"
                 label-for="mincontract"
@@ -77,7 +77,7 @@
           <label for="">Other Detail & Remark*</label>
           <vue-editor v-model="newJob.detail"></vue-editor>
         </b-col>
-        <b-col cols="4" style="border-left: 5px solid rgba(189, 189, 189, 0.35)">
+        <b-col md="4" style="border-left: 5px solid rgba(189, 189, 189, 0.35)">
           <h4 class="text-center"><span style="font-weight: 800;font-size: 1.5em;">C</span>ontact</h4>
           <b-form-group label="ข้อมูลบริษัท" label-for="company">
             <b-form-input

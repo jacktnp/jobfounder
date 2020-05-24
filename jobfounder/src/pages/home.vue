@@ -1,8 +1,8 @@
 <template>
   <b-container>
     <b-row>
-        <b-col cols="4">Sidebar</b-col>
-        <b-col cols="8">
+        <b-col md="4">Sidebar</b-col>
+        <b-col md="8">
             <!-- Jobs Loop -->
             <div :key="key" v-for="(job, key) in alljobs">
                 <b-card :title="job.position" :sub-title="job.type" class="mb-3" v-if="job.check == 'approve'">
