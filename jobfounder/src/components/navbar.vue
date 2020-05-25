@@ -12,9 +12,10 @@
           <b-nav-item href="../" active>งานทั้งหมด</b-nav-item>
           <b-nav-item href="../request">รับสมัครงาน</b-nav-item>
           <!-- <b-nav-item href="../adminpanel">ผู้ดูแลระบบ</b-nav-item> -->
-          <b-nav-item href="../login" v-show="!showlogout">Login</b-nav-item>
-          <b-nav-item v-show="showlogout">{{ displayName }}</b-nav-item>
-          <b-nav-item><button @click="signout" type="submit" v-show="showlogout">Signout</button></b-nav-item>
+          <b-nav-item href="../adminpanel">Adminpanel</b-nav-item>
+          <b-nav-item href="../adminconfig">Adminconfig</b-nav-item>
+          <!-- <b-nav-item href="../login">Login</b-nav-item> -->
+          <b-nav-item @click="signout" type="submit">Logout</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>

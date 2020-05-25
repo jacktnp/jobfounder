@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container class="mb-5">
     <b-form @submit.prevent="addJobs">
       <b-row>
         <b-col md="8">
@@ -15,24 +15,18 @@
           </b-form-group>
           <br />
           <b-form-group label="สกิลที่จำเป็น">
-            <b-form-checkbox-group
-              id="relateskill"
-              v-model="newJob.relateskill"
-              :options="skill_option"
-              name="relateskill"
-            ></b-form-checkbox-group>
+            <b-form-checkbox-group id="relateskill" v-model="newJob.relateskill">
+              <b-form-checkbox  :key="key" v-for="(subskill, key) in allskill" :value="subskill.skill">{{ subskill.skill }}</b-form-checkbox>
+            </b-form-checkbox-group>
           </b-form-group>
           <br />
 
           <b-row>
             <b-col md="3">
               <b-form-group label="ประเภทงาน">
-                <b-form-checkbox-group
-                  id="typejob"
-                  v-model="newJob.typejob"
-                  :options="typeo"
-                  name="typejob"
-                ></b-form-checkbox-group>
+                <b-form-checkbox-group id="typejob" v-model="newJob.typejob">
+                  <b-form-checkbox  :key="key" v-for="(subworktype, key) in allworktype" :value="subworktype.worktype">{{ subworktype.worktype }}</b-form-checkbox>
+                </b-form-checkbox-group>
               </b-form-group>
             </b-col>
             <b-col md="3">
@@ -130,12 +124,12 @@
 
       <!-- <b-button type="reset" variant="outline-danger" class="w-100 my-3">Reset</b-button> -->
     </b-form>
-    <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ newJob }}</pre>
+    <!-- <b-card class="mt-3" header="Form Data Result">
+      <pre class="m-0">{{ allskill }}</pre>
     </b-card>
     <ul :key="key" v-for="(job, key) in alljobs">
         <li>{{ job.position }}</li>
-    </ul>
+    </ul> -->
   </b-container>
 </template>
 
@@ -150,6 +144,8 @@ export default {
   data() {
     return {
       alljobs: {},
+      allskill: {},
+      allworktype: {},
       newJob: {
         position: "",
         relateskill: [],
@@ -216,7 +212,13 @@ export default {
   mounted () {
     main.jobsRef.on('value', (snapshot) => {
         this.alljobs = snapshot.val()
-    })
+    });
+    main.skillRef.on("value", snapshot => {
+      this.allskill = snapshot.val();
+    });
+    main.worktypeRef.on("value", snapshot => {
+      this.allworktype = snapshot.val();
+    });
     // jobsRef.jobsRef.once('value').then((snapshot) => {this.alljobs = snapshot.val()})
   }
 };

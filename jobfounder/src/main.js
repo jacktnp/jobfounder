@@ -36,9 +36,11 @@ const config = {
 let app = Firebase.initializeApp(config)
 let db = app.database()
 let jobsRef = db.ref('jobs')
+let skillRef = db.ref('skill')
+let worktypeRef = db.ref('worktype')
 
 export default{
-  app,jobsRef
+  app,jobsRef,skillRef,worktypeRef
 }
 
 /* eslint-disable no-new */

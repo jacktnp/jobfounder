@@ -3,7 +3,7 @@
     <h2>Admin Panel</h2>
     <!-- Jobs Loop -->
     <div :key="key" v-for="(job, key) in alljobs">
-      <b-card :title="job.position" class="mb-3" v-if="job.check != 'reject'">
+      <b-card :title="job.position+' | '+job.companyname" class="mb-3" v-if="job.check != 'reject'">
           <span class="badge badge-pill badge-dark">{{ job.check }}</span>
         <div class="d-flex justify-content-end">
             <b-button class="btn-success btn-sm mr-1" id="show-btn" @click="updateJobs(key, 'approve')"
@@ -43,7 +43,7 @@ export default {
     firebase.auth().onAuthStateChanged((user) => {
         if (!user) {
           this.$router.replace({ path: "/login" })
-          alert("You don't have a permission")
+          // alert("You don't have a permission")
         }
     });
   },

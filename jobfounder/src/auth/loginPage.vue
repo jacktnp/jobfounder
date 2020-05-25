@@ -1,27 +1,34 @@
 <template>
-  <div id="login" class="main-box">
-    <form @submit.prevent="login">
-      <h1>Login | {{displayName}}</h1>
-      <div class="title">
-        <h3>Email</h3>
-        <input v-model="email" type="text" class="input" placeholder="Email" />
-      </div>
-      <div class="title">
-        <h3>Password</h3>
-        <input
+  <b-container>
+    <b-form @submit.prevent="login">
+      <b-form-group
+        id="input-group-1"
+        label="Email address:"
+        label-for="input-1"
+        description="We'll never share your email with anyone else."
+      >
+        <b-form-input
+          id="input-1"
+          v-model="email"
+          type="email"
+          required
+          placeholder="Enter email"
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group id="input-group-2" label="Password :" label-for="input-2">
+        <b-form-input
+          id="input-2"
           v-model="password"
           type="password"
-          class="input"
-          placeholder="Password"
-        />
-      </div>
-      <button type="submit" class="btn">Login</button>
-    </form>
-    <!-- <div>or Sign in with 3rd Party</div>
-    <button id="google" @click="loginWithThirdParty" class="btn-pic">
-      <img src="https://expresswriters.com/wp-content/uploads/2015/09/google-new-logo.jpg" alt width="100px" height="100px" />
-    </button> -->
-  </div>
+          required
+          placeholder="Enter Password"
+        ></b-form-input>
+      </b-form-group>
+
+      <b-button type="submit" variant="primary">Login</b-button>
+    </b-form>
+  </b-container>
 </template>
 
 <script>
