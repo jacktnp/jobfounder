@@ -181,7 +181,10 @@ export default {
         { text: "Node.js", value: "Node.js" },
         { text: "Django", value: "Django" },
         { text: "Python", value: "Python" },
-        { text: "C", value: "C" }
+        { text: "C", value: "C" },
+        { text: "PHP", value: "PHP" },
+        { text: "Wordpress", value: "Python" },
+        { text: "Laravel", value: "Laravel" },
       ]
     };
   },
