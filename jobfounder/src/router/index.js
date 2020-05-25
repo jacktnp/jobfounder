@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import home from '@/pages/home'
 import request from '@/pages/request'
 import adminpanel from '@/admin/approve'
+import loginPage from '@/auth/loginPage'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/adminpanel',
       name: 'adminpanel',
       component: adminpanel
+    },
+    {
+      path: '/login',
+      name: 'loginPage',
+      component: loginPage
     },
   ]
 })

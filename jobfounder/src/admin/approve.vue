@@ -74,8 +74,17 @@
 
 <script>
 import main from "@/main.js";
+import firebase from "firebase";
 
 export default {
+  beforeCreate() {
+    firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+          this.$router.replace({ path: "/login" })
+          alert("You don't have a permission")
+        }
+    });
+  },
   data() {
     return {
       alljobs: {},
@@ -118,6 +127,6 @@ export default {
     main.jobsRef.on("value", snapshot => {
       this.alljobs = snapshot.val();
     });
-  }
+  },
 };
 </script>

@@ -10,9 +10,10 @@ import { VueEditor } from "vue2-editor"
 import { firestorePlugin } from 'vuefire'
 import Firebase from 'firebase'
 import VueToast from 'vue-toast-notification';
-// Import one of available themes
-import 'vue-toast-notification/dist/theme-default.css';
-//import 'vue-toast-notification/dist/theme-sugar.css';
+import firebase from 'firebase/app'
+// import 'vue-toast-notification/dist/theme-default.css';
+import 'vue-toast-notification/dist/theme-sugar.css';
+
 Vue.use(VueToast);
 Vue.use(firestorePlugin)
 Vue.use(BootstrapVue)
@@ -30,16 +31,27 @@ const config = {
   appId: "1:406458204536:web:373f85a19d2a0ac9bcc88d",
   measurementId: "G-RRHFV0S89C"
 };
+// Firebase.initializeApp(config)
 
 let app = Firebase.initializeApp(config)
 let db = app.database()
 let jobsRef = db.ref('jobs')
 
 export default{
-  jobsRef
+  app,jobsRef
 }
 
 /* eslint-disable no-new */
+// firebase.auth().onAuthStateChanged(() => {
+//   if(!app){
+//     app = new Vue({
+//             el: '#app',
+//             router,
+//             components: { App },
+//             template: '<App/>'
+//           });
+//   }
+// });
 new Vue({
   el: '#app',
   router,
