@@ -73,6 +73,20 @@
         </b-col>
         <b-col md="4" style="border-left: 5px solid rgba(189, 189, 189, 0.35)">
           <h4 class="text-center"><span style="font-weight: 800;font-size: 1.5em;">C</span>ontact</h4>
+          <!-- Upload Test -->
+          <div>
+            <p>Logo Company (ratio 1:1)</p>
+            <input type="file" @change="previewImage" accept="image/*" >
+          </div>
+          <div class="my-3">
+            <p>Progress: {{uploadValue.toFixed()+"%"}}
+            <progress id="progress" :value="uploadValue" max="100" ></progress>  </p>
+          </div>
+          <div v-if="imageData!=null">
+              <img class="preview my-3" :src="newJob.logo" width="100%" height="100%" >
+            <!-- <button class="btn btn-outline-dark w-100" @click="onUpload">Upload</button> -->
+          </div>
+          <!--  -->
           <b-form-group label="ข้อมูลบริษัท" label-for="company">
             <b-form-input
               id="companyname"
@@ -136,6 +150,7 @@
 <script>
 import { VueEditor } from "vue2-editor";
 import main from "@/main.js";
+import firebase from "firebase";
 
 export default {
   components: {
@@ -159,54 +174,61 @@ export default {
         companyphone: "",
         companymail: "",
         companysite: "",
-        check: 'pending'
+        check: 'pending',
+        logo: null
       },
-      typeo: [
-        { text: "Full time", value: "Full time" },
-        { text: "Part time", value: "Part time" },
-        { text: "Internship", value: "Internship" }
-      ],
-      skill_option: [
-        { text: "HTML", value: "HTML" },
-        { text: "CSS", value: "CSS" },
-        { text: "Javascript", value: "Javascript" },
-        { text: "Vue.js", value: "Vue.js" },
-        { text: "React", value: "React" },
-        { text: "React Native", value: "React Native" },
-        { text: "Flutter", value: "Flutter" },
-        { text: "Node.js", value: "Node.js" },
-        { text: "Django", value: "Django" },
-        { text: "Python", value: "Python" },
-        { text: "C", value: "C" },
-        { text: "PHP", value: "PHP" },
-        { text: "Wordpress", value: "Python" },
-        { text: "Laravel", value: "Laravel" },
-      ]
+      imageData: null,
+      picture: null,
+      uploadValue: 0
     };
   },
   methods: {
     addJobs: function () {
-        main.jobsRef.push(this.newJob);
-        this.newJob.position = '';
-        this.newJob.relateskill = [];
-        this.newJob.typejob = [];
-        this.newJob.minsalary = '';
-        this.newJob.maxsalary = '';
-        this.newJob.contract = '';
-        this.newJob.detail = '';
-        this.newJob.companyname = '';
-        this.newJob.companyaddress = '';
-        this.newJob.companyphone = '';
-        this.newJob.companymail = '';
-        this.newJob.companysite = '';
-        this.newJob.check = 'pending';
-        this.$toast.open({
-          message: "ส่งข้อมูลสำเร็จ รออนุมัติจากผู้ดูแลระบบ",
-          position: "top-right",
-          type: "success",
-          duration: 5000,
-          dismissible: true
-        })
+        // Upload Image
+        this.newJob.logo = null;
+        const storageRef=firebase.storage().ref(`${this.imageData.name}`).put(this.imageData);
+        storageRef.on(`state_changed`,snapshot=>{
+          this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+        }, error=>{console.log(error.message)},
+        ()=>{this.uploadValue=100;
+          storageRef.snapshot.ref.getDownloadURL().then((url)=>{
+            this.newJob.logo = url;
+          });
+        }
+        );
+        setTimeout(() => {
+          // Add to DB
+          main.jobsRef.push(this.newJob);
+          this.newJob.position = '';
+          this.newJob.relateskill = [];
+          this.newJob.typejob = [];
+          this.newJob.minsalary = '';
+          this.newJob.maxsalary = '';
+          this.newJob.contract = '';
+          this.newJob.detail = '';
+          this.newJob.companyname = '';
+          this.newJob.companyaddress = '';
+          this.newJob.companyphone = '';
+          this.newJob.companymail = '';
+          this.newJob.companysite = '';
+          this.newJob.check = 'pending';
+          this.newJob.logo = '';
+          this.$toast.open({
+            message: "ส่งข้อมูลสำเร็จ รออนุมัติจากผู้ดูแลระบบ",
+            position: "top-right",
+            type: "success",
+            duration: 5000,
+            dismissible: true
+          });
+        }, 2000);
+    },
+    previewImage(event) {
+      this.uploadValue=0;
+      this.picture=null;
+      this.imageData = event.target.files[0];
+    },
+    onUpload(){
+      
     }
   },
   mounted () {
@@ -224,4 +246,5 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
