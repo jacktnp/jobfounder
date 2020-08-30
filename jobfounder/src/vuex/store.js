@@ -17,7 +17,7 @@ const state = {
 const mutations = {
   setUser(state, user){
     state.user.status = user.status;
-    state.user.id = user.id;
+    state.user.id = user._id;
     state.user.username = user.username;
     state.user.role = user.role;
   },

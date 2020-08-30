@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import feed from '@/pages/feed'
+import explore from '@/pages/explore'
+import dashboard from '@/pages/dashboard'
+import profile from '@/pages/profile'
 
 Vue.use(Router)
 
@@ -12,7 +15,25 @@ export default new Router({
       name: 'feed',
       component: feed
     },
-    { path: '*', redirect: '/' }
+    {
+      path: '/explore',
+      name: 'explore',
+      component: explore
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: dashboard
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: profile
+    },
+    { 
+      path: '*',
+      redirect: '/'
+    }
   ]
 });
 
