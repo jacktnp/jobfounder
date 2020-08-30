@@ -1,12 +1,19 @@
 <template>
   <div id="app">
-    <router-view/>
+      <home />
   </div>
 </template>
 
 <script>
+import store from './vuex/store'
+import home from './pages/home'
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    home
+  },
+  store
 }
 </script>
 

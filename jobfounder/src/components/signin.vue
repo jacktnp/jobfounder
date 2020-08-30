@@ -1,6 +1,6 @@
 <template>
   <div class="w-75 mx-auto mt-4">
-    <b-form @submit="authUser">
+    <b-form @submit.prevent="authUser">
       <b-form-group id="usernamelabel" label-for="username">
         <b-form-input
           id="username"
@@ -45,13 +45,17 @@ export default {
   methods: {
     authUser() {
       axios
-        .post("http://localhost:3000/login", {
+        .post("https://projectjobfinder01.herokuapp.com/login", {
           username: this.form.username,
           password: this.form.password
         })
         .then(
           response => {
-            console.log(response);
+            if(response.data.status == 'success'){
+              console.log("login success")
+              this.$store.commit('setUser', response.data);
+            }
+            // console.log(response);
           },
           error => {
             console.log(error);

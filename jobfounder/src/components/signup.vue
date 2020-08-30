@@ -57,7 +57,7 @@ export default {
   methods: {
     authUser() {
       axios
-        .post("http://localhost:3000/register", {
+        .post("https://projectjobfinder01.herokuapp.com/register", {
           username: this.form.username,
           email: this.form.email,
           password: this.form.password,
@@ -65,6 +65,9 @@ export default {
         })
         .then(
           response => {
+            if(response.data.status == 'success'){
+              this.$store.commit('setUser', response.data);
+            }
             console.log(response);
           },
           error => {

@@ -1,41 +1,41 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VuexPersistence from 'vuex-persist'
 
 Vue.use(Vuex)
 
+
 const state = {
-  todos: [],
-  number: 0
+  user:{
+    status: 'INVALID',
+    id: '',
+    username: '',
+    role: ''
+  },
 }
 
 const mutations = {
-  addText: (state, name) => {
-    state.todos.push({ name: name })
+  setUser(state, user){
+    state.user.status = user.status;
+    state.user.id = user.id;
+    state.user.username = user.username;
+    state.user.role = user.role;
   },
-  addNum: (state, num) => {
-    state.number += num
-  }
 }
 
 const getters = {
-  todos: state => state.todos,
-  number: state => state.number
+  user:state => state.user,
 }
 
-const actions = {
-  addTodo: (state, name) => {
-    store.commit('addText', name)
-  },
-  addNumber: (state, num) => {
-    store.commit('addNum', num)
-  }
-}
+const actions = {}
+
 
 let store = new Vuex.Store({
   state: state,
   mutations: mutations,
   getters: getters,
-  actions: actions
+  actions: actions,
+  plugins: [new VuexPersistence().plugin]
 })
 
 global.store = store
