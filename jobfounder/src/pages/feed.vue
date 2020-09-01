@@ -3,7 +3,7 @@
     <h2>Job Feed</h2>
     <hr />
     <div class="row mt-4">
-      <div class="col-lg-6" style="border-bottom: 1px solid rgb(217 217 217)" v-for="feed in feeds" :key="feed.id">
+      <div class="col-lg-6" style="border-bottom: 1px solid rgb(217 217 217)" v-for="(feed, index) in feeds" :key="feed.id">
         <!--  -->
         <b-card
           no-body
@@ -26,13 +26,29 @@
                 <b-card-text>
                   {{ feed.description }}
                 </b-card-text>
-                <b-button type="submit" class="bg-btn-gradient px-4 py-1" pill
+                <b-button type="submit" class="bg-btn-gradient px-4 py-1" pill @click="$bvModal.show('feed'+index)"
                   >Read</b-button
                 >
               </b-card-body>
             </b-col>
           </b-row>
         </b-card>
+        <!-- Modal -->
+        <b-modal :id="'feed'+index" size="lg" hide-footer>
+          <template v-slot:modal-title>
+            <h3>{{ $store.getters.user.username }}</h3>
+            <small><i class="far fa-clock"></i> {{ feeds[index].due_date }}</small>
+          </template>
+            <b-row class="p-0">
+              <b-col md="6">
+                <img :src="feeds[index].img" class="w-100 h-100">
+              </b-col>
+              <b-col md="6">
+                <h5>{{ feeds[index].title }}</h5>
+                <p>{{ feeds[index].description }}</p>
+              </b-col>
+            </b-row>
+        </b-modal>
         <!--  -->
       </div>
     </div>
@@ -63,6 +79,7 @@ export default {
                 obj['title'] = response.data[i].title;
                 obj['description'] = response.data[i].description;
                 obj['due_date'] = response.data[i].due_date;
+                // obj['date'] = response.data[i].date;
                 obj['status'] = response.data[i].status;
                 obj['img'] = response.data[i].img;
                 this.feeds.push(obj);

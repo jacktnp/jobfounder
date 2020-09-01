@@ -4,12 +4,42 @@
     <hr>
     <b-card-group columns class="mt-4">
       
-      <b-card img-src="https://placekitten.com/g/400/450" no-body />
-      <b-card img-src="https://placekitten.com/500/350" no-body />
-      <b-card img-src="https://picsum.photos/400/400/?image=41" no-body />
-      <b-card img-src="https://picsum.photos/400/200/?image=41" no-body />
-      <b-card img-src="https://placekitten.com/500/350" no-body />
+      <b-card v-for="port in portfolio" :key="port.id" :img-src="port.img" no-body />
 
     </b-card-group>
   </b-container>
 </template>
+
+<script>
+import axios from 'axios'
+
+export default {
+  data(){
+    return{
+      portfolio: []
+    }
+  },
+  methods:{
+    getPortfolio() {
+      axios
+        .get("https://projectjobfinder01.herokuapp.com/users/get-profile/")
+        .then(
+          response => {
+            for (var i = 0; i < response.data.length; i++){
+                var obj = {};
+                obj['id'] = response.data[i]._id;
+                obj['img'] = response.data[i].img;
+                this.portfolio.push(obj);
+            }
+          },
+          error => {
+            console.log(error);
+          }
+        );
+    }
+  },
+  mounted() {
+    this.getPortfolio()
+  }
+}
+</script>

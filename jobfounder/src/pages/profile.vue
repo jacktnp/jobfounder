@@ -46,7 +46,7 @@
                  <b-button class="bg-btn-gradient px-2 py-1" pill v-b-modal.editCompany v-if="userrole == 'company'">edit company</b-button>
                  <!-- modal.editProfile -->
                  <b-modal id="editProfile" title="Edit Profile" hide-footer>
-                    <b-form @submit="updateUserInfo()">
+                    <b-form @submit.prevent="updateUserInfo()">
                         <b-row>
                             <b-col md="6">
                                 <b-form-group
@@ -210,9 +210,9 @@
             </b-col>
             <b-col lg="9" md="8" class="pl-5">
                 <b-container>
-                    <profileStudent v-if="userrole == 'student'" />
-                    <profileInstructor v-else-if="userrole == 'instructor'" />
-                    <profileCompany v-else-if="userrole == 'company' && company.flg == 1" />
+                    <profileStudent v-if="userrole == 'student'" :user="username" />
+                    <profileInstructor v-else-if="userrole == 'instructor'" :user="username" />
+                    <profileCompany v-else-if="userrole == 'company' && company.flg == 1" :user="username" />
                 </b-container>
             </b-col>
         </b-row>
@@ -292,7 +292,7 @@ export default {
             }
             );
         },
-        getUserInfo: function() {
+        getUserInfo() {
             axios
             .post("https://projectjobfinder01.herokuapp.com/users/get-member-by-username/", {
                 "username": this.username
@@ -337,7 +337,7 @@ export default {
         },
         updateUserInfo() {
             axios
-            .post("https://projectjobfinder01.herokuapp.com/users/update-user-information-by-username/", {
+            .post("https://projectjobfinder01.herokuapp.com/update-user-information-by-username", {
                 "username": this.username,
                 "fname": this.updateInfo.fname,
                 "lname": this.updateInfo.lname,
@@ -345,11 +345,12 @@ export default {
                 "phone": this.updateInfo.phone,
                 "citizenid": this.updateInfo.citizenid,
                 "description": this.updateInfo.description,
-                "profile_img": '',
+                "profile_img": '#',
                 "flg": 1
             })
             .then(
             response => {
+                console.log('update success')
                 this.getUserInfo();
             },
             error => {

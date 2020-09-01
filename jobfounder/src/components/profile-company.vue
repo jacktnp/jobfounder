@@ -7,7 +7,7 @@
     </div>
     <hr />
     <div class="row mt-4">
-      <div class="col-12 pb-3" style="border-bottom: 1px solid rgb(217 217 217)">
+      <div class="col-12 pb-3" style="border-bottom: 1px solid rgb(217 217 217)" v-for="job in jobs" :key="job.id">
         <b-card
           no-body
           class="overflow-hidden"
@@ -17,18 +17,17 @@
             <b-col md="3">
               <b-img
                 thumbnail
-                src="https://picsum.photos/400/400/?image=20"
+                :src="job.img"
                 rounded="circle"
               ></b-img>
             </b-col>
             <b-col md="9">
-              <b-card-body title="Job Title">
+              <b-card-body :title="job.title">
                 <small style="color: rgb(0 0 0 / 56%)"
-                  ><i class="far fa-clock"></i> 31 sep 2020</small
+                  ><i class="far fa-clock"></i> {{ job.date }}</small
                 >
                 <b-card-text>
-                  This is desription. This is desription. This is desription.
-                  This is desription.
+                  {{ job.description }}
                 </b-card-text>
                 <b-button type="submit" class="bg-btn-gradient px-4 py-1" pill
                   >edit post</b-button
@@ -40,7 +39,7 @@
       </div>
     </div>
     <!-- Modal Annouce -->
-    <b-modal id="modal-annouce" size="lg" hide-footer class="p-0  " title="New Annoucement">
+    <b-modal id="modal-annouce" size="lg" hide-footer class="p-0" title="New Annoucement">
       <b-row>
         <b-col cols="6">
           <b-img fluid :src="newAnn.img" class="w-100 h-100" />
@@ -73,9 +72,9 @@
             </b-form-group>
             <b-form-datepicker id="due_date" class="mb-3" v-model="newAnn.due_date"></b-form-datepicker>
             <b-form-textarea
-              id="desciption"
-              name="desciption"
-              v-model="newAnn.desciption"
+              id="description"
+              name="description"
+              v-model="newAnn.description"
               rows="4"
               max-rows="8"
               class="mb-3"
@@ -92,14 +91,17 @@
 import axios from 'axios'
 
 export default {
+  props: ['user'],
   data(){
     return{
+      username: this.user,
       newAnn: {
         title: "",
-        desciption: "",
+        description: "",
         due_date: "",
         img: "https://picsum.photos/250/250/?image=54"
-      }
+      },
+      jobs: []
     }
   },
   methods: {
@@ -116,6 +118,7 @@ export default {
       .then(
         response => {
           console.log("update company info success")
+          this.jobs = [];
           this.getJob();
         },
         error => {
@@ -125,23 +128,32 @@ export default {
     },
     getJob() {
       axios
-      .post("https://projectjobfinder01.herokuapp.com/users/create-work/", {
-        "username": this.$store.getters.user.username,
-        "title": this.newAnn.title,
-        "description": this.newAnn.description,
-        "due_date": this.newAnn.due_date,
-        "status": 'alive',
-        "img": this.newAnn.img
+      .post("https://projectjobfinder01.herokuapp.com/users/get-all-work-by-username", {
+        "username": this.username,
       })
       .then(
         response => {
-          console.log("update company info success")
+          for (var i = 0; i < response.data.length; i++){
+              var obj = {};
+              obj['id'] = response.data[i]._id;
+              obj['username'] = response.data[i].username;
+              obj['title'] = response.data[i].title;
+              obj['description'] = response.data[i].description;
+              obj['due_date'] = response.data[i].due_date;
+              obj['status'] = response.data[i].status;
+              obj['date'] = response.data[i].date;
+              obj['img'] = response.data[i].img;
+              this.jobs.push(obj);
+          }
         },
         error => {
           console.log("update company info fail")
         }
       );
     }
+  },
+  mounted() {
+    this.getJob();
   }
 }
 </script>

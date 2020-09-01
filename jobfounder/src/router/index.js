@@ -5,6 +5,7 @@ import explore from '@/pages/explore'
 import dashboard from '@/pages/dashboard'
 import profile from '@/pages/profile'
 import logout from '@/pages/logout'
+import stdprofile from '@/pages/stdprofile'
 
 Vue.use(Router)
 
@@ -35,6 +36,12 @@ export default new Router({
       path: '/logout',
       name: 'logout',
       component: logout
+    },
+    {
+      path: '/student/:username',
+      name: 'stdprofile',
+      component: stdprofile,
+      params: true
     },
     { 
       path: '*',
