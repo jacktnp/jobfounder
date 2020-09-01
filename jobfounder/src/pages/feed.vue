@@ -1,31 +1,81 @@
 <template>
-    <div class="container my-5">
-        <h2>Job Feed</h2>
-        <hr>
-        <div class="row mt-4">
-            <div class="col-lg-6" style="border-bottom: 1px solid rgb(217 217 217)">
-                <!--  -->
-                <b-card no-body class="overflow-hidden" style="background: transparent;border: 0px;">
-                    <b-row no-gutters>
-                    <b-col md="3">
-                        <b-img thumbnail src="https://picsum.photos/400/400/?image=20" rounded="circle"></b-img>
-                    </b-col>
-                    <b-col md="9">
-                        <b-card-body title="Job Title">
-                            <small style="color: rgb(0 0 0 / 56%)"><i class="far fa-clock"></i> 31 sep 2020</small>
-                            <b-card-text>
-                                This is desription.
-                                This is desription.
-                                This is desription.
-                                This is desription.
-                            </b-card-text>
-                            <b-button type="submit" class="bg-btn-gradient px-4 py-1" pill>Read</b-button>
-                        </b-card-body>
-                    </b-col>
-                    </b-row>
-                </b-card>
-                <!--  -->
-            </div>
-        </div>
+  <div class="container my-5">
+    <h2>Job Feed</h2>
+    <hr />
+    <div class="row mt-4">
+      <div class="col-lg-6" style="border-bottom: 1px solid rgb(217 217 217)" v-for="feed in feeds" :key="feed.id">
+        <!--  -->
+        <b-card
+          no-body
+          class="overflow-hidden"
+          style="background: transparent;border: 0px;"
+        >
+          <b-row no-gutters>
+            <b-col md="3">
+              <b-img
+                thumbnail
+                :src="feed.img"
+                rounded="circle"
+              ></b-img>
+            </b-col>
+            <b-col md="9">
+              <b-card-body :title="feed.title">
+                <small style="color: rgb(0 0 0 / 56%)"
+                  ><i class="far fa-clock"></i> {{ feed.due_date }}</small
+                >
+                <b-card-text>
+                  {{ feed.description }}
+                </b-card-text>
+                <b-button type="submit" class="bg-btn-gradient px-4 py-1" pill
+                  >Read</b-button
+                >
+              </b-card-body>
+            </b-col>
+          </b-row>
+        </b-card>
+        <!--  -->
+      </div>
     </div>
+  </div>
 </template>
+
+<script>
+import axios from 'axios'
+
+export default {
+  data() {
+      return{
+          feeds: []
+      }
+  },
+  methods: {
+    getAllFeed() {
+      axios
+        .get("https://projectjobfinder01.herokuapp.com/users/get-all-work/")
+        .then(
+          response => {
+            console.log("login success", response.data.length);
+            
+            for (var i = 0; i < response.data.length; i++){
+                var obj = {};
+                obj['id'] = response.data[i]._id;
+                obj['username'] = response.data[i].username;
+                obj['title'] = response.data[i].title;
+                obj['description'] = response.data[i].description;
+                obj['due_date'] = response.data[i].due_date;
+                obj['status'] = response.data[i].status;
+                obj['img'] = response.data[i].img;
+                this.feeds.push(obj);
+            }
+          },
+          error => {
+            console.log(error);
+          }
+        );
+    }
+  },
+  mounted() {
+      this.getAllFeed();
+  }
+};
+</script>

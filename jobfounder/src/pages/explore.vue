@@ -14,7 +14,7 @@
         
         <hr>
         <div class="row mt-4">
-            <div class="col-lg-6">
+            <div class="col-lg-6" v-for="student in students" :key="student.id">
                 <!--  -->
                 <b-card no-body class="overflow-hidden p-2" style="border-radius: 1.75em;">
                     <b-row no-gutters>
@@ -22,8 +22,8 @@
                         <b-img class="w-100" src="https://picsum.photos/400/400/?image=20" rounded="circle"></b-img>
                     </b-col>
                     <b-col md="9">
-                        <b-card-body title="Job Title">
-                            <small style="color: rgb(0 0 0 / 56%)"><i class="far fa-clock"></i> 31 sep 2020</small>
+                        <b-card-body :title="student.username">
+                            <!-- <small style="color: rgb(0 0 0 / 56%)"><i class="far fa-clock"></i> 31 sep 2020</small> -->
                             <b-card-text>
                                 <i class="far fa-university"></i> KMITL Faculty of Information Technology
                                 <br>
@@ -41,3 +41,39 @@
         </div>
     </div>
 </template>
+
+
+<script>
+import axios from 'axios'
+
+export default {
+  data() {
+      return{
+          students: []
+      }
+  },
+  methods: {
+    getAllStudent() {
+      axios
+        .get("https://projectjobfinder01.herokuapp.com/users/get-member-by-role/")
+        .then(
+          response => {
+            
+            for (var i = 0; i < response.data.length; i++){
+                var obj = {};
+                obj['id'] = response.data[i]._id;
+                obj['username'] = response.data[i].username;
+                this.students.push(obj);
+            }
+          },
+          error => {
+            console.log(error);
+          }
+        );
+    }
+  },
+  mounted() {
+      this.getAllStudent();
+  }
+};
+</script>

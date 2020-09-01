@@ -1,6 +1,6 @@
 <template>
   <div class="w-75 mx-auto mt-4">
-    <b-form @submit="authUser">
+    <b-form @submit.prevent="authUser()">
       <b-form-group id="usernamelabel" label-for="username">
         <b-form-input
           id="username"
@@ -59,19 +59,16 @@ export default {
       axios
         .post("https://projectjobfinder01.herokuapp.com/register", {
           username: this.form.username,
-          email: this.form.email,
           password: this.form.password,
           role: "company"
         })
         .then(
           response => {
-            if(response.data.status == 'success'){
-              this.$store.commit('setUser', response.data);
-            }
-            console.log(response);
+            this.$store.commit('setUser', response.data);
+            console.log('success');
           },
           error => {
-            console.log(error);
+            console.log('error');
           }
         );
     }

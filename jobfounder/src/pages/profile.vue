@@ -3,28 +3,37 @@
         <b-row>
             <b-col lg="3" md="4">
                  <b-img src="https://picsum.photos/125/125/?image=58" rounded="circle" class="w-100"></b-img>
-                 <h3 class="mt-4">
+                 <h4 class="mt-4">
                      <i class="far fa-building" v-if="userrole == 'company'" />
                      <i class="far fa-chalkboard-teacher" v-else-if="userrole == 'instructor'" />
                      <i class="far fa-user-graduate" v-else-if="userrole == 'student'" />
-                     SuphakitNch
-                 </h3>
-                 <p>Text here...</p>
+                     {{ this.$store.getters.user.username }}
+                 </h4>
+                 <p>{{ information.description }}</p>
                  <div v-if="userrole == 'company'">
-                    <hr>
-                    <h5 class="my-3"># Company Information</h5>
-                    <p><i class="far fa-building" /> Company name</p>
-                    <p><i class="far fa-map-marker-alt" /> Company address</p>
-                    <p><i class="far fa-phone" /> Company phone</p>
-                    <p><i class="far fa-envelope" /> Company email</p>
-                    <p><i class="far fa-browser" /> Company website</p>
+                    <div v-if="company.flg == 1">
+                        <hr>
+                        <h5 class="my-3"># Company Information</h5>
+                        <p><i class="far fa-building" /> {{ company.company_name }}</p>
+                        <p><i class="far fa-map-marker-alt" /> {{ company.company_address }}</p>
+                        <p><i class="far fa-phone" /> {{ company.company_phone }}</p>
+                        <p><i class="far fa-envelope" /> {{ company.company_email }}</p>
+                        <p><i class="far fa-browser" /> {{ company.company_website }}</p>
+                    </div>
+                    <div v-else>
+                        <p class="text-center">กรุณากรอกข้อมูลบริษัท<br>ก่อนใช้งาน</p>
+                    </div>
                  </div>
                  <div>
                     <hr>
                     <h5 class="my-3"># Personal Information</h5>
                     <p v-if="userrole != 'company'">
-                        <i class="far fa-university"></i> KMITL Faculty of Information Technology
+                        <i class="far fa-university"></i> Faculty of Information Technology, KMITL.
                     </p>
+                    <p>{{ information.fname + ' ' + information.lname }}</p>
+                    <p>{{ information.email }}</p>
+                    <p>{{ information.phone }}</p>
+                    <p>{{ information.citizenid }}</p>
                     <!-- <p>
                         <i class="fab fa-instagram"></i> jacktnp
                     </p>
@@ -37,7 +46,7 @@
                  <b-button class="bg-btn-gradient px-2 py-1" pill v-b-modal.editCompany v-if="userrole == 'company'">edit company</b-button>
                  <!-- modal.editProfile -->
                  <b-modal id="editProfile" title="Edit Profile" hide-footer>
-                    <b-form @submit="onSubmit">
+                    <b-form @submit="updateUserInfo()">
                         <b-row>
                             <b-col md="6">
                                 <b-form-group
@@ -47,7 +56,7 @@
                                 >
                                     <b-form-input
                                     id="fname"
-                                    v-model="update.fname"
+                                    v-model="updateInfo.fname"
                                     type="text"
                                     ></b-form-input>
                                 </b-form-group>
@@ -60,7 +69,7 @@
                                 >
                                     <b-form-input
                                     id="lname"
-                                    v-model="update.lname"
+                                    v-model="updateInfo.lname"
                                     type="text"
                                     ></b-form-input>
                                 </b-form-group>
@@ -73,7 +82,7 @@
                                 >
                                     <b-form-input
                                     id="email"
-                                    v-model="update.email"
+                                    v-model="updateInfo.email"
                                     type="email"
                                     ></b-form-input>
                                 </b-form-group>
@@ -86,7 +95,7 @@
                                 >
                                     <b-form-input
                                     id="phone"
-                                    v-model="update.phone"
+                                    v-model="updateInfo.phone"
                                     type="text"
                                     ></b-form-input>
                                 </b-form-group>
@@ -99,7 +108,7 @@
                                 >
                                     <b-form-input
                                     id="citizenid"
-                                    v-model="update.citizenid"
+                                    v-model="updateInfo.citizenid"
                                     type="text"
                                     ></b-form-input>
                                 </b-form-group>
@@ -112,7 +121,7 @@
                                 >
                                     <b-form-input
                                     id="description"
-                                    v-model="update.description"
+                                    v-model="updateInfo.description"
                                     type="text"
                                     ></b-form-input>
                                 </b-form-group>
@@ -125,7 +134,7 @@
                  <!--  -->
                  <!-- modal.editProfile -->
                  <b-modal id="editCompany" title="Edit Company" hide-footer>
-                    <b-form @submit="onSubmit">
+                    <b-form @submit.prevent="updateCompanyInfo()">
                         <b-row>
                             <b-col md="6">
                                 <b-form-group
@@ -135,7 +144,7 @@
                                 >
                                     <b-form-input
                                     id="company_name"
-                                    v-model="company.company_name"
+                                    v-model="updateCompany.company_name"
                                     type="text"
                                     ></b-form-input>
                                 </b-form-group>
@@ -148,21 +157,21 @@
                                 >
                                     <b-form-input
                                     id="company_address"
-                                    v-model="company.company_address"
+                                    v-model="updateCompany.company_address"
                                     type="text"
                                     ></b-form-input>
                                 </b-form-group>
                             </b-col>
                             <b-col md="6">
                                 <b-form-group
-                                    id="laddrcompany_phoneess"
-                                    label="Phone:"
-                                    label-for="addrcompany_phoneess"
+                                    id="lcompany_phone"
+                                    label="Company Phone:"
+                                    label-for="company_phone"
                                 >
                                     <b-form-input
-                                    id="addrcompany_phoneess"
-                                    v-model="company.addrcompany_phoneess"
-                                    type="addrcompany_phoneess"
+                                    id="company_phone"
+                                    v-model="updateCompany.company_phone"
+                                    type="company_phone"
                                     ></b-form-input>
                                 </b-form-group>
                             </b-col>
@@ -174,7 +183,7 @@
                                 >
                                     <b-form-input
                                     id="company_email"
-                                    v-model="company.company_email"
+                                    v-model="updateCompany.company_email"
                                     type="text"
                                     ></b-form-input>
                                 </b-form-group>
@@ -187,7 +196,7 @@
                                 >
                                     <b-form-input
                                     id="company_website"
-                                    v-model="company.company_website"
+                                    v-model="updateCompany.company_website"
                                     type="text"
                                     ></b-form-input>
                                 </b-form-group>
@@ -203,7 +212,7 @@
                 <b-container>
                     <profileStudent v-if="userrole == 'student'" />
                     <profileInstructor v-else-if="userrole == 'instructor'" />
-                    <profileCompany v-else-if="userrole == 'company'" />
+                    <profileCompany v-else-if="userrole == 'company' && company.flg == 1" />
                 </b-container>
             </b-col>
         </b-row>
@@ -214,6 +223,7 @@
 import profileStudent from '@/components/profile-student'
 import profileInstructor from '@/components/profile-instructor'
 import profileCompany from '@/components/profile-company'
+import axios from 'axios'
 
 export default {
     components: {
@@ -221,44 +231,136 @@ export default {
     },
     data(){
         return{
+            username: this.$store.getters.user.username,
             userrole: this.$store.getters.user.role,
-            update: {
+            updateInfo: {
                 fname: '',
                 lname: '',
                 email: '',
                 phone: '',
                 citizenid: '',
+                description: ''
             },
-            company: {
-                username: '',
+            updateCompany: {
                 company_name: '',
                 company_address: '',
-                addrcompany_phoneess: '',
+                company_phone: '',
                 company_email: '',
                 company_website: ''
-            }
+            },
+            company: {
+                company_name: '',
+                company_address: '',
+                company_phone: '',
+                company_email: '',
+                company_website: '',
+                flg: 0
+            },
+            information: {
+                fname: '',
+                lname: '',
+                email: '',
+                phone: '',
+                citizenid: '',
+                description: '',
+                flg: 0
+            },
         }
     },
     methods:{
-        authUser() {
-        axios
-            .get("https://projectjobfinder01.herokuapp.com/users/get-member-by-id/"+this.$store.getters.user.id)
+        getCompanyInfo() {
+            axios
+            .post("https://projectjobfinder01.herokuapp.com/users/get-company-data-by-user/", {
+                "username": this.$store.getters.user.username
+            })
             .then(
             response => {
-                if(response.data.status == 'success'){
-                console.log("login success")
-                this.$store.commit('setUser', response.data);
+                if(response.data[0].flg == 1){
+                    this.company.company_name = response.data[0].company_name;
+                    this.company.company_address = response.data[0].company_address;
+                    this.company.company_phone = response.data[0].company_phone;
+                    this.company.company_email = response.data[0].company_email;
+                    this.company.company_website = response.data[0].company_website;
+                    this.company.flg = response.data[0].flg;
                 }
-                // console.log(response);
+                else{
+                    this.company.flg = response.data[0].flg;
+                }
+            },
+            error => {
+                console.log('error');
+            }
+            );
+        },
+        getUserInfo: function() {
+            axios
+            .post("https://projectjobfinder01.herokuapp.com/users/get-member-by-username/", {
+                "username": this.username
+            })
+            .then(
+            response => {
+                if(response.data[0].flg == 1){
+                    this.information.fname = response.data[0].fname;
+                    this.information.lname = response.data[0].lname;
+                    this.information.email = response.data[0].email;
+                    this.information.citizenid = response.data[0].citizenid;
+                    this.information.description = response.data[0].description;
+                    this.information.flg = 1;
+                }
+            },
+            error => {
+                console.log('error');
+            }
+            );
+        },
+        updateCompanyInfo: function() {
+            axios
+            .post("https://projectjobfinder01.herokuapp.com/users/update-company-by-username/", {
+                "username": this.$store.getters.user.username,
+                "company_name": this.updateCompany.company_name,
+                "company_address": this.updateCompany.company_address,
+                "company_phone": this.updateCompany.company_phone,
+                "company_email": this.updateCompany.company_email,
+                "company_website": this.updateCompany.company_website,
+                "flg": 1
+            })
+            .then(
+            response => {
+                console.log("update company info success")
+                this.getCompanyInfo();
+            },
+            error => {
+                console.log("update company info fail")
+                console.log(error);
+            }
+            );
+        },
+        updateUserInfo() {
+            axios
+            .post("https://projectjobfinder01.herokuapp.com/users/update-user-information-by-username/", {
+                "username": this.username,
+                "fname": this.updateInfo.fname,
+                "lname": this.updateInfo.lname,
+                "email": this.updateInfo.email,
+                "phone": this.updateInfo.phone,
+                "citizenid": this.updateInfo.citizenid,
+                "description": this.updateInfo.description,
+                "profile_img": '',
+                "flg": 1
+            })
+            .then(
+            response => {
+                this.getUserInfo();
             },
             error => {
                 console.log(error);
             }
             );
-        }
+        },
     },
-    mouted(){
-
+    mounted(){
+        this.getUserInfo();
+        if(this.userrole == 'company'){this.getCompanyInfo();};
     }
 }
 </script>

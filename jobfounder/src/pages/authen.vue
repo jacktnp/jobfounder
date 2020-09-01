@@ -4,6 +4,7 @@
             <b-col md="6">
                 <p>Welcome to</p>
                 <h1><span class="font-weight-bold">JOB</span><span class="font-weight-light">FOUNDER</span></h1>
+                <!-- <img src="https://i.imgur.com/ygDv1Ap.png" style="width: 10em;" /> -->
             </b-col>
             <b-col md="6">
                 <div class="container bg-white shadow p-5" style="max-width: 28em;border-radius: 3em;">

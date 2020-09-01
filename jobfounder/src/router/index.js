@@ -4,6 +4,7 @@ import feed from '@/pages/feed'
 import explore from '@/pages/explore'
 import dashboard from '@/pages/dashboard'
 import profile from '@/pages/profile'
+import logout from '@/pages/logout'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/profile',
       name: 'profile',
       component: profile
+    },
+    {
+      path: '/logout',
+      name: 'logout',
+      component: logout
     },
     { 
       path: '*',

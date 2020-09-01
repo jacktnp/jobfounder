@@ -20,7 +20,7 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200;300;400;500;700&display=swap');
 
-#app {
+#app, body {
   font-family: 'Prompt', sans-serif;
   background: #F0F2F5;
   height: 100%;

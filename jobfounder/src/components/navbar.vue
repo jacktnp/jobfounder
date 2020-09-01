@@ -2,7 +2,10 @@
   <div>
     <b-navbar toggleable="lg" type="light" variant="light" class="shadow-sm">
         <b-container>
-            <b-navbar-brand href="../"><b>JOB</b>FOUNDER</b-navbar-brand>
+            <b-navbar-brand href="../">
+                <!-- <b>JOB</b>FOUNDER -->
+                <img src="https://i.imgur.com/ygDv1Ap.png" style="width: 2em;" />
+            </b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -13,6 +16,7 @@
                     <b-nav-item href="/explore"><i class="far fa-search size-lg this-is-icon"></i></b-nav-item>
                     <b-nav-item href="/dashboard"><i class="far fa-newspaper size-lg this-is-icon"></i></b-nav-item>
                     <b-nav-item href="/profile"><i class="far fa-user size-lg this-is-icon"></i></b-nav-item>
+                    <b-nav-item href="/logout"><i class="far fa-sign-out-alt size-lg this-is-icon"></i></b-nav-item>
                 </b-navbar-nav>
             </b-collapse>
         </b-container>
